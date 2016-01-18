@@ -10,4 +10,8 @@ public abstract class Constant {
 	
 	public static final String UNDER_SCORE = "_";
 	
+	public static final String DIR_EXTRACT_PATH_KEY = "dirExtractPath";
+	
+	public static final String DIR_FILE_PATH_KEY = "dirFilePath";
+	
 }

@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 import com.manifera.pdfparser.gui.MainWindow;
+import com.manifera.pdfparser.util.PropertiesFileUtil;
 
 public class MainApplication {
 
@@ -19,7 +20,7 @@ public class MainApplication {
 				try {
 					MainApplication window = new MainApplication();
 					window.mainWindow.setVisible(true);
-					System.out.println(Thread.currentThread().getName());
+					PropertiesFileUtil.createAppConfigFile();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -39,7 +40,7 @@ public class MainApplication {
 	 */
 	private void initialize() {
 		
-		mainWindow = new MainWindow("MagBe PDF Parser - 1.0.0");
+		mainWindow = new MainWindow("MagBe PDF Parser - 0.4.0");
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 

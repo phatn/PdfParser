@@ -25,6 +25,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +44,7 @@ import com.manifera.pdfparser.tools.itext.ItextParser;
 import com.manifera.pdfparser.tools.pdfbox.PdfBoxImageExtractor;
 import com.manifera.pdfparser.tools.pdfbox.PdfBoxParser;
 import com.manifera.pdfparser.util.Constant;
+import com.manifera.pdfparser.util.PropertiesFileUtil;
 
 
 public class MainWindow extends JFrame {
@@ -132,14 +134,14 @@ public class MainWindow extends JFrame {
 		
 		// Init chooser dir
 		folderChooser = new JFileChooser();
-		folderChooser.setCurrentDirectory(new java.io.File(Constant.DESTOP_PATH));
+		//folderChooser.setCurrentDirectory(new java.io.File(Constant.DESTOP_PATH));
 		folderChooser.setDialogTitle("Choose folder to extract");
 		folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		folderChooser.setAcceptAllFileFilterUsed(false);
 		
 		// Init chooser file
 		fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File(Constant.DESTOP_PATH));
+		//fileChooser.setCurrentDirectory(new File(Constant.DESTOP_PATH));
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF","pdf");
 		fileChooser.setFileFilter(filter);
 		fileChooser.setMultiSelectionEnabled(false);
@@ -274,12 +276,23 @@ public class MainWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			String initDirPath = StringUtils.isEmpty(PropertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY)) ? Constant.DESTOP_PATH : PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY);
+			logger.info("0. initFileDirPath: " + PropertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY));
+			if(!StringUtils.isEmpty(PropertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY))) {
+				initDirPath = PropertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY);
+				logger.info("1. initFileDirPath: " + initDirPath);
+			}
+			logger.info("2. initFileDirPath: " + initDirPath);
+			fileChooser.setCurrentDirectory(new java.io.File(initDirPath));
+			
 			int result = fileChooser.showOpenDialog(contentPane);
 			
 			// If a pdf file is selected
 			if (result == JFileChooser.APPROVE_OPTION) {
 			    File selectedFile = fileChooser.getSelectedFile();
 			    selectedFileName = selectedFile.getName();
+			    PropertiesFileUtil.setProperty(Constant.DIR_FILE_PATH_KEY, fileChooser.getCurrentDirectory().getAbsolutePath());
+			    System.out.println("Phat: " + fileChooser.getCurrentDirectory().getAbsolutePath());
 			    lblFile.setText(showShortFilePath(selectedFile.getAbsolutePath(), LENGTH_FILE_PATH_SHOW));
 			    lblFile.setToolTipText(selectedFile.getAbsolutePath());
 			    filePath = selectedFile.getAbsolutePath();
@@ -365,10 +378,19 @@ public class MainWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			String initDirPath = StringUtils.isEmpty(PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY)) ? Constant.DESTOP_PATH : PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY);
 			
+			logger.info("0. initDirPath: " + PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY));
+			if(!StringUtils.isEmpty(PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY))) {
+				initDirPath = PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY);
+				logger.info("1. initDirPath: " + initDirPath);
+			}
+			logger.info("2. initDirPath: " + initDirPath);
+			folderChooser.setCurrentDirectory(new java.io.File(initDirPath));
 			int result = folderChooser.showOpenDialog(contentPane);
 			if(result == JFileChooser.APPROVE_OPTION) {
-				selectedDirExtract = folderChooser.getCurrentDirectory().getAbsolutePath();
+				selectedDirExtract = folderChooser.getSelectedFile().getAbsolutePath();
+				PropertiesFileUtil.setProperty(Constant.DIR_EXTRACT_PATH_KEY, selectedDirExtract);
 				lblDirPath.setText(showShortFilePath(selectedDirExtract, LENGTH_FOLDER_PATH_SHOW));
 				lblDirPath.setToolTipText(selectedDirExtract);
 				contentPane.revalidate();
