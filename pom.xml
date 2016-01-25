@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.manifera.pdfparser</groupId>
 	<artifactId>PDFParser</artifactId>
-  	<version>0.4.0</version>
+  	<version>0.4.1</version>
   
   	<properties>
   		<pdfbox.version>1.8.10</pdfbox.version>
@@ -87,6 +87,9 @@
 			          <mainClass>com.manifera.pdfparser.main.MainApplication</mainClass>
 			        </manifest>
 			      </archive>
+			      <outputDirectory>/Users/phat/Desktop/parser-jar</outputDirectory>
+				  <overWriteReleases>false</overWriteReleases>
+              	  <overWriteSnapshots>true</overWriteSnapshots>
 			    </configuration>
 			    <executions>
 			      <execution>
@@ -105,5 +108,6 @@
                 <artifactId>maven-assembly-plugin</artifactId>
             </plugin>
         </plugins>
+        
   	</build>
 </project>
