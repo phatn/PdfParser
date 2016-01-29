@@ -35,7 +35,7 @@ public class PdfBoxParser implements PdfParserAlgorithm {
 			pdfDocument = new PDDocument(cosDocument);
 			int max = config.getEndPage() > pdfDocument.getNumberOfPages() ? pdfDocument.getNumberOfPages() : config.getEndPage();
 			LOG.info("PDFBOX extract text from: " + config.getStartPage() + " to " + max);
-			MyPDFTextStripper pdfStripper = new MyPDFTextStripper();
+			PDFTextStripperEx pdfStripper = new PDFTextStripperEx();
 			
 			// Extract text with page range
 			pdfStripper.setStartPage(config.getStartPage());

@@ -33,8 +33,8 @@ import org.apache.pdfbox.util.TextPositionComparator;
  * and {@link #setIndentThreshold(float)} or the defaults
  * can be changed using the System Properties:
  * <pre>
- *     mypdftextstripper.drop
- *     mypdftextstripper.indent
+ *     pdftextstripperex.drop
+ *     pdftextstripperex.indent
  * </pre>
  * which can be set using the -D switch at the start of the
  * Java runtime.
@@ -44,16 +44,16 @@ import org.apache.pdfbox.util.TextPositionComparator;
  *
  */
 
-public class MyPDFTextStripper extends PDFTextStripper {
+public class PDFTextStripperEx extends PDFTextStripper {
 
-	private static final Class<MyPDFTextStripper> thisClass = MyPDFTextStripper.class;
+	private static final Class<PDFTextStripperEx> thisClass = PDFTextStripperEx.class;
 	
     private static float DEFAULT_INDENT_THRESHOLD = 2.0f;
     private static float DEFAULT_DROP_THRESHOLD = 2.5f;
     //enable the ability to set the default indent/drop thresholds
     //with -D system properties:
-    //    mypdftextstripper.indent
-    //    mypdftextstripper.drop
+    //    pdftextstripperex.indent
+    //    pdftextstripperex.drop
     static{
    	 String prop = thisClass.getSimpleName().toLowerCase()+".indent";
         String s = System.getProperty(prop);
@@ -177,7 +177,7 @@ public class MyPDFTextStripper extends PDFTextStripper {
     /**
      * This will get the page separator used to demark the
      * boundary between pages.
-     * @deprecated - not used in MyPDFTextStripper.  Use discrete {@link #getPageStart()}
+     * @deprecated - not used in PDFTextStripperEx.  Use discrete {@link #getPageStart()}
      *               and {@link #getPageEnd()} instead.
      * @return The page separator string.
      */
@@ -187,7 +187,7 @@ public class MyPDFTextStripper extends PDFTextStripper {
     }
 
     /**
-     * @deprecated - not used in MyPDFTextStripper.  Use discrete {@link #setPageStart(String)}
+     * @deprecated - not used in PDFTextStripperEx.  Use discrete {@link #setPageStart(String)}
      *               and {@link #setPageEnd(String)} instead.
      * @param separator The desired page separator string.
      */
@@ -234,21 +234,21 @@ public class MyPDFTextStripper extends PDFTextStripper {
     /**
      * {@inheritDoc}
      */
-    public MyPDFTextStripper()throws IOException{
+    public PDFTextStripperEx()throws IOException{
                 super();
     }
 
     /**
      * {@inheritDoc}
      */
-    public MyPDFTextStripper(String s)throws IOException{
+    public PDFTextStripperEx(String s)throws IOException{
                 super(s);
     }
 
     /**
      * {@inheritDoc}
      */
-    public MyPDFTextStripper(Properties properties)throws IOException{
+    public PDFTextStripperEx(Properties properties)throws IOException{
                 super(properties);
     }
 
@@ -282,6 +282,14 @@ public class MyPDFTextStripper extends PDFTextStripper {
 		return lastLineStartPosition;
 	}
 
+	/**
+	 * 
+	 * @param position the current text position
+	 */
+	protected void isBelongTitle(PositionWrapper position){
+		
+	}
+	
     /**
      * tests the relationship between the last text position, the current text
      * position and the last text position that followed a line separator to
