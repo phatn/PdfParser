@@ -3,6 +3,7 @@ package com.manifera.pdfparser.tools.pdfbox;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
@@ -10,6 +11,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.manifera.pdfparser.domain.Article;
 import com.manifera.pdfparser.domain.PdfExtractConfig;
 import com.manifera.pdfparser.domain.PdfInfo;
 import com.manifera.pdfparser.tools.PdfParserAlgorithm;
@@ -35,7 +37,7 @@ public class PdfBoxParser implements PdfParserAlgorithm {
 			pdfDocument = new PDDocument(cosDocument);
 			int max = config.getEndPage() > pdfDocument.getNumberOfPages() ? pdfDocument.getNumberOfPages() : config.getEndPage();
 			LOG.info("PDFBOX extract text from: " + config.getStartPage() + " to " + max);
-			PDFTextStripperEx pdfStripper = new PDFTextStripperEx();
+			PdfArticleExtractor pdfStripper = new PdfArticleExtractor();
 			
 			// Extract text with page range
 			pdfStripper.setStartPage(config.getStartPage());
@@ -43,7 +45,10 @@ public class PdfBoxParser implements PdfParserAlgorithm {
 			
 			// Get result of text extraction
 			pdfInfo = new PdfInfo();
-			pdfInfo.setText(pdfStripper.getText(pdfDocument));
+			//pdfInfo.setText(pdfStripper.getText(pdfDocument));
+			String body = "<body>" + pdfStripper.getText(pdfDocument) + "</body>";
+			String title = "<title>" + pdfStripper.getArticles().get(0).getTitle() + "</title>";
+			pdfInfo.setText(title + System.getProperty("line.separator") + body);
 		} catch(IOException ex) {
 			throw ex;
 		} finally {

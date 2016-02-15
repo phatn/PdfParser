@@ -40,7 +40,7 @@ public class MainApplication {
 	 */
 	private void initialize() {
 		
-		mainWindow = new MainWindow("MagBe PDF Parser - 0.4.1");
+		mainWindow = new MainWindow("MagBe PDF Parser - 0.4.2");
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
