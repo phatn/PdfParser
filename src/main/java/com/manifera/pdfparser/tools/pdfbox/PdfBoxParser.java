@@ -48,7 +48,8 @@ public class PdfBoxParser implements PdfParserAlgorithm {
 			//pdfInfo.setText(pdfStripper.getText(pdfDocument));
 			String body = "<body>" + pdfStripper.getText(pdfDocument) + "</body>";
 			String title = "<title>" + pdfStripper.getArticles().get(0).getTitle() + "</title>";
-			pdfInfo.setText(title + System.getProperty("line.separator") + body);
+			String introduction = "<intro>" + pdfStripper.getArticles().get(0).getIntroduction() + "</intro>";
+			pdfInfo.setText(title + System.getProperty("line.separator") + introduction + System.getProperty("line.separator") + body);
 		} catch(IOException ex) {
 			throw ex;
 		} finally {

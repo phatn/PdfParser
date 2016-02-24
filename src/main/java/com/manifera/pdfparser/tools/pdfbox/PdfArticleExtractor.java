@@ -48,13 +48,19 @@ public class PdfArticleExtractor extends PDFTextStripper {
 				
 			}
 			
-			// Determine the potential text positions is in title or body
+			// Determine the potential text positions is in title or introduction (default is body)
 			for(int i = 0; i < textPositions.size(); i++) {
+				
+				// If the text is title
 				if(Math.abs(maxFontSize - textPositions.get(i).getFontSizeInPt()) <= DELTA_IS_TITLE ) {
 					textPositions.get(i).setTextType(TextType.TITLE);
 					titlePositions.add(textPositions.get(i));
-				} else if(Math.abs(minFontSize - textPositions.get(i).getFontSizeInPt()) > DELTA_IS_BODY
+				}
+				
+				// If the text is introduction
+				else if(Math.abs(minFontSize - textPositions.get(i).getFontSizeInPt()) > DELTA_IS_BODY
 						&& Math.abs(maxFontSize - textPositions.get(i).getFontSizeInPt()) > DELTA_IS_TITLE) {
+					textPositions.get(i).setTextType(TextType.INTRODUCTION);
 					introductionPositions.add(textPositions.get(i));
 				}
 			}

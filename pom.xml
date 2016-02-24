@@ -6,6 +6,7 @@
   
   	<properties>
   		<!-- <pdfbox.version>1.8.10</pdfbox.version> -->
+  		<flexjson.version>3.3</flexjson.version>
   		<pdfbox.version>1.8.12-SNAPSHOT</pdfbox.version>
   		<itext.version>4.2.2</itext.version>
   		<icepdf.version>1.0.0.RELEASE</icepdf.version>
@@ -51,7 +52,12 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 		
-		
+		<!-- Flexjson -->
+		<dependency>
+			<groupId>net.sf.flexjson</groupId>
+			<artifactId>flexjson</artifactId>
+			<version>${flexjson.version}</version>
+		</dependency> 
 	</dependencies>
   	
   	<build>

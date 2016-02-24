@@ -314,7 +314,7 @@ public class MainWindow extends JFrame {
 			try {
 				startPage = Integer.parseInt(txtStartPage.getText());
 				endPage = Integer.parseInt(txtEndPage.getText());
-				if(startPage > 0 && endPage > 0 && endPage > startPage) {
+				if(startPage > 0 && endPage > 0 && endPage >= startPage) {
 					isCorrectPageRanges = true;
 				}
 			} catch(NumberFormatException ex) {
@@ -576,7 +576,7 @@ public class MainWindow extends JFrame {
 	private String getFileName(String filePath) {
 		int pos = filePath.lastIndexOf(".");
 		if(pos <= 0)
-			return "undefined";
+			return filePath;
 		return filePath.substring(0, pos);
 	}
 }
