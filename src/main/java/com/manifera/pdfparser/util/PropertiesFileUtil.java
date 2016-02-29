@@ -19,84 +19,79 @@ public class PropertiesFileUtil {
 	
 	private static Properties prop = new Properties();
 	
-	private static final String FILE_NAME = "pdfparser.properties";
-	
 	private static File USER_HOME;
 	
+	private String fileName;
+	
 	static {
+		
+		// Get user home for Mac
 		if(SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX) {
 			USER_HOME = new File(System.getProperty("user.home") + File.separator + "Documents");
-		} else if(SystemUtils.IS_OS_WINDOWS) {
+		} 
+		// Get user home for Windows
+		else if(SystemUtils.IS_OS_WINDOWS) {
 			USER_HOME = new File(System.getProperty("user.home") + File.separator + "My Documents");
-		} else {
+		} 
+		// Get user home for others (Linux)
+		else {
 			USER_HOME = new File(".");
 		}
-		System.out.println("USER_HOME: " + USER_HOME);
+		
+		LOG.info("USER_HOME: " + USER_HOME.getAbsolutePath());
 	}
 	
-	private PropertiesFileUtil() {}
+	public PropertiesFileUtil(String fileName) {
+		this.fileName = fileName;
+	}
 	
-	public  static String getProperty(String key) {
-		InputStream inputStream = null;
-		try {
-			inputStream = new FileInputStream(new File(USER_HOME + File.separator + FILE_NAME));
+	public String getProperty(String key) {
+		
+		try(InputStream inputStream = new FileInputStream(new File(USER_HOME + File.separator + fileName))) {
 			prop.load(inputStream);
 			return prop.getProperty(key);
 		} catch(FileNotFoundException ex) {
-			LOG.error(ex.getMessage());
+			
+			LOG.error("Cannot file " + fileName + " - Error: "+ ex.getMessage());
+			ex.printStackTrace();
 		} catch(IOException ex) {
-			LOG.error(ex.getMessage());
-		} finally {
-			if(inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			
+			LOG.error("Cannot load file: " + fileName + " - Error: " + ex.getMessage());
+			ex.printStackTrace();
 		}
 
 		return "";
 	}
 	
-	public static void setProperty(String key, String value) {
-		OutputStream outputStream = null;
-		try {
-			outputStream = new FileOutputStream(new File(USER_HOME + File.separator + FILE_NAME));
+	public void setProperty(String key, String value) {
+		try (OutputStream outputStream = new FileOutputStream(new File(USER_HOME + File.separator + fileName))){
 			prop.setProperty(key, value);
 			prop.store(outputStream, "");
 		} catch(FileNotFoundException ex) {
-			LOG.error(ex.getMessage());
+			
+			LOG.error("Cannot file " + fileName + " - Error: "+ ex.getMessage());
+			ex.printStackTrace();
 		} catch(IOException ex) {
-			LOG.error(ex.getMessage());
-		} finally {
-			if(outputStream != null) {
-				try {
-					outputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			
+			LOG.error("Cannot load file: " + fileName + " - Error: " + ex.getMessage());
+			ex.printStackTrace();
 		}
 	}
 	
-	public static void createAppConfigFile() {
+	public void createAppConfigFile() {
 		
-		System.out.println("userHome: " + USER_HOME.getAbsolutePath());
-		File propertiesFile = new File(USER_HOME, FILE_NAME);
+		File propertiesFile = new File(USER_HOME, fileName);
 		if(!propertiesFile.exists()) {
-			System.out.println("Not existed");
+			
+			LOG.info(propertiesFile.getAbsolutePath() + "is not existed - should crate a new one.");
 			try {
 				propertiesFile.createNewFile();
 			} catch (IOException e) {
-				LOG.error(e.getMessage());
+				
+				LOG.error("Error when creating " + propertiesFile.getAbsolutePath() + " file - Error: "+e.getMessage());
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	public static void main(String[] args) {
-		//createAppConfigFile();
-		System.out.println(System.getProperty("user.dir") + File.separator + "workspace");
-	}
 }

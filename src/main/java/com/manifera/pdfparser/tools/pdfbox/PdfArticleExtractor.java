@@ -2,6 +2,7 @@ package com.manifera.pdfparser.tools.pdfbox;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.pdfbox.util.PDFTextStripper;
@@ -9,6 +10,7 @@ import org.apache.pdfbox.util.TextPosition;
 import org.apache.pdfbox.util.TextType;
 
 import com.manifera.pdfparser.domain.Article;
+import com.manifera.pdfparser.util.Constant;
 
 
 public class PdfArticleExtractor extends PDFTextStripper {
@@ -65,23 +67,23 @@ public class PdfArticleExtractor extends PDFTextStripper {
 				}
 			}
 			
-			StringBuilder title = new StringBuilder();
-			StringBuilder introduction = new StringBuilder();
-			StringBuilder body = new StringBuilder();
+			StringBuilder titleBuilder = new StringBuilder();
+			StringBuilder highlightBuilder = new StringBuilder();
+			StringBuilder bodyBuilder = new StringBuilder();
 			
 			for(TextPosition text : textPositions) {
 				
 				if(text.getTextType() == TextType.TITLE) {
-					title.append(text.getCharacter());
+					titleBuilder.append(text.getCharacter());
 				} else if (text.getTextType() == TextType.BODY) {
-					body.append(text.getCharacter());
+					bodyBuilder.append(text.getCharacter());
 				} else {
-					introduction.append(text.getCharacter());
+					highlightBuilder.append(text.getCharacter());
 				}
-				
 			}
+			List<String> body = Arrays.asList(bodyBuilder.toString().split(Constant.NEW_LINE));
 			
-			articles.add(new Article(title.toString(), introduction.toString(), body.toString()));
+			articles.add(new Article(titleBuilder.toString(), body, highlightBuilder.toString()));
 		}
 		return articles;
 	}

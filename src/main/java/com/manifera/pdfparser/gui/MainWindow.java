@@ -61,6 +61,8 @@ public class MainWindow extends JFrame {
 	
 	private static final int LENGTH_FOLDER_PATH_SHOW = 35;
 	
+	private static final PropertiesFileUtil propertiesFileUtil = new PropertiesFileUtil(Constant.PDFPARSER_PROPERTIES_NAME);
+	
 	private JButton btnOpenFile;
 
 	private JPanel contentPane;
@@ -276,10 +278,11 @@ public class MainWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String initDirPath = StringUtils.isEmpty(PropertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY)) ? Constant.DESTOP_PATH : PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY);
-			logger.info("0. initFileDirPath: " + PropertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY));
-			if(!StringUtils.isEmpty(PropertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY))) {
-				initDirPath = PropertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY);
+			
+			String initDirPath = StringUtils.isEmpty(propertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY)) ? Constant.DESTOP_PATH : propertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY);
+			logger.info("0. initFileDirPath: " + propertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY));
+			if(!StringUtils.isEmpty(propertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY))) {
+				initDirPath = propertiesFileUtil.getProperty(Constant.DIR_FILE_PATH_KEY);
 				logger.info("1. initFileDirPath: " + initDirPath);
 			}
 			logger.info("2. initFileDirPath: " + initDirPath);
@@ -291,7 +294,7 @@ public class MainWindow extends JFrame {
 			if (result == JFileChooser.APPROVE_OPTION) {
 			    File selectedFile = fileChooser.getSelectedFile();
 			    selectedFileName = selectedFile.getName();
-			    PropertiesFileUtil.setProperty(Constant.DIR_FILE_PATH_KEY, fileChooser.getCurrentDirectory().getAbsolutePath());
+			    propertiesFileUtil.setProperty(Constant.DIR_FILE_PATH_KEY, fileChooser.getCurrentDirectory().getAbsolutePath());
 			    System.out.println("Phat: " + fileChooser.getCurrentDirectory().getAbsolutePath());
 			    lblFile.setText(showShortFilePath(selectedFile.getAbsolutePath(), LENGTH_FILE_PATH_SHOW));
 			    lblFile.setToolTipText(selectedFile.getAbsolutePath());
@@ -378,11 +381,11 @@ public class MainWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String initDirPath = StringUtils.isEmpty(PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY)) ? Constant.DESTOP_PATH : PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY);
+			String initDirPath = StringUtils.isEmpty(propertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY)) ? Constant.DESTOP_PATH : propertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY);
 			
-			logger.info("0. initDirPath: " + PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY));
-			if(!StringUtils.isEmpty(PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY))) {
-				initDirPath = PropertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY);
+			logger.info("0. initDirPath: " + propertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY));
+			if(!StringUtils.isEmpty(propertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY))) {
+				initDirPath = propertiesFileUtil.getProperty(Constant.DIR_EXTRACT_PATH_KEY);
 				logger.info("1. initDirPath: " + initDirPath);
 			}
 			logger.info("2. initDirPath: " + initDirPath);
@@ -390,7 +393,7 @@ public class MainWindow extends JFrame {
 			int result = folderChooser.showOpenDialog(contentPane);
 			if(result == JFileChooser.APPROVE_OPTION) {
 				selectedDirExtract = folderChooser.getSelectedFile().getAbsolutePath();
-				PropertiesFileUtil.setProperty(Constant.DIR_EXTRACT_PATH_KEY, selectedDirExtract);
+				propertiesFileUtil.setProperty(Constant.DIR_EXTRACT_PATH_KEY, selectedDirExtract);
 				lblDirPath.setText(showShortFilePath(selectedDirExtract, LENGTH_FOLDER_PATH_SHOW));
 				lblDirPath.setToolTipText(selectedDirExtract);
 				contentPane.revalidate();
@@ -513,7 +516,7 @@ public class MainWindow extends JFrame {
 	    //boolean result = writeResult(pdfBoxHandlerFacade, ToolParser.PDFBOX);
 	    //if(!result) {
 	    	//return false;
-	    //ßßßß}
+	    //}
 	    //JProgressBar progressBar, PdfHandler pdfHandler, PdfExtractConfig config, ToolParser toolParser
 	    //SwingUtilities.invokeLater(new ParserTask(progressBarDialog.getPdfBoxProgressBar(), pdfBoxHandlerFacade, config, ToolParser.PDFBOX));
 	    ParserTask pdfBoxTask = new ParserTask(progressBarDialog.getPdfBoxProgressBar(), pdfBoxHandlerFacade, pdfBoxConfig, ToolParser.PDFBOX);
